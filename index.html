@@ -391,6 +391,69 @@
         We bring your brand to life — digitally and on paper.
       </p>
     </div>
+    <!-- --- INVOICE SYSTEM --- -->
+<script>
+  // === INVOICE / RECEIPT GENERATOR ===
+  function generateInvoice() {
+    if (cart.length === 0) {
+      alert('Your cart is empty!');
+      return;
+    }
+
+    const now = new Date();
+    const invoiceNum = 'DPX-' + now.getTime();
+    const dateStr = now.toLocaleString();
+
+    let invoiceHTML = `
+      <div style="font-family:Arial,sans-serif;padding:20px;color:#111;background:#fff;max-width:700px;margin:auto;border-radius:12px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;border-bottom:2px solid #00bcd4;padding-bottom:10px;margin-bottom:20px;">
+          <div>
+            <h2 style="color:#00bcd4;margin:0;">DATAPHIX TECH HUB</h2>
+            <p style="margin:2px 0;font-size:13px;">Kampala, Uganda<br>dataphixitsolutions@gmail.com<br>+256 785 476 064</p>
+          </div>
+          <img src="dataphix.jpg" alt="Logo" style="width:80px;height:80px;border-radius:10px;object-fit:cover;">
+        </div>
+
+        <h3 style="margin-bottom:10px;">Invoice / Receipt</h3>
+        <p style="font-size:13px;margin-bottom:20px;">Invoice No: <strong>${invoiceNum}</strong><br>Date: ${dateStr}</p>
+
+        <table style="width:100%;border-collapse:collapse;margin-bottom:20px;">
+          <thead>
+            <tr style="background:#00bcd4;color:#000;">
+              <th style="text-align:left;padding:8px;">Item</th>
+              <th style="text-align:right;padding:8px;">Price (UGX)</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${cart.map(it => `
+              <tr>
+                <td style="padding:8px;border-bottom:1px solid #ccc;">${it.name}</td>
+                <td style="padding:8px;text-align:right;border-bottom:1px solid #ccc;">${it.price.toLocaleString()}</td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+
+        <h3 style="text-align:right;margin-bottom:10px;">Total: UGX ${cart.reduce((a,b)=>a+b.price,0).toLocaleString()}</h3>
+        <p style="font-size:13px;text-align:center;">Thank you for shopping with Dataphix 💙</p>
+        <div style="text-align:center;margin-top:20px;">
+          <button onclick="window.print()" style="background:#00bcd4;color:#000;border:none;padding:8px 16px;border-radius:8px;font-weight:600;cursor:pointer;">Print / Save as PDF</button>
+        </div>
+      </div>
+    `;
+
+    // Create printable window
+    const w = window.open('', 'PRINT', 'height=700,width=900');
+    w.document.write(`<html><head><title>${invoiceNum}</title></head><body>${invoiceHTML}</body></html>`);
+    w.document.close();
+    w.focus();
+  }
+
+  // Hook up to checkout button
+  document.getElementById('checkoutBtn').addEventListener('click', () => {
+    generateInvoice();
+  });
+</script>
 
     <!-- Quick Links -->
     <div>
