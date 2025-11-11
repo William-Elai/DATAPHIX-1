@@ -1,541 +1,745 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Dataphix Stationery & Tech Hub</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Dataphix Stationery & Tech Hub</title>
 
-  <!-- Tailwind CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
 
-  <!-- Font Awesome (icons) -->
-  <script src="https://kit.fontawesome.com/a2e0d5c6f0.js" crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/a2e0d5c6f0.js" crossorigin="anonymous"></script>
 
-  <style>
-    :root{
-      --bg-1: #0b0f14;
-      --glass: rgba(255,255,255,0.03);
-      --accent-a: #00bcd4;
-      --accent-b: #8bc34a;
-    }
-    html,body { height:100%; margin:0; font-family:Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; color:#e6eef6; background:var(--bg-1); }
-    header.site-header {
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-      background: rgba(0,0,0,0.6);
-      backdrop-filter: blur(8px);
-      border-bottom:1px solid rgba(255,255,255,0.03);
-    }
-    header.site-header .hero-bg {
-      position: absolute;
-      inset:0;
-      background: url('456.jpg') center/cover no-repeat;
-      opacity: 0.45;
-      filter: blur(2px);
-      z-index:0;
-    }
-    header.site-header .overlay {
-      position:absolute; inset:0; background:rgba(0,0,0,0.45); z-index:1;
-    }
-    header.site-header .header-content { position:relative; z-index:2; }
-    .glass { background: rgba(255,255,255,0.03); border-radius:1rem; padding:1rem; }
-    .accent-gradient { background: linear-gradient(90deg,var(--accent-a),var(--accent-b)); -webkit-background-clip:text; color:transparent; }
-    .card-glow { box-shadow:0 8px 30px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.02); border-radius:1rem; padding:1rem; transition: transform .25s; }
-    .card-glow:hover { transform: translateY(-6px); }
-    table { width:100%; border-collapse:collapse; margin-top:1rem; }
-    th, td { border:1px solid rgba(255,255,255,0.06); padding:0.75rem; text-align:left; }
-    th { background: rgba(255,255,255,0.03); }
-    input, textarea, select { width:100%; padding:0.5rem; margin-top:0.25rem; border-radius:0.5rem; border:none; background: rgba(255,255,255,0.03); color:#e6eef6; }
-    .btn { background: linear-gradient(90deg,var(--accent-a),var(--accent-b)); color:black; padding:0.5rem 1rem; border:none; border-radius:0.5rem; cursor:pointer; font-weight:600; display:inline-flex; align-items:center; gap:0.5rem; }
-    .max-w-7xl { max-width:1100px; margin-left:auto; margin-right:auto; }
-  </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+    <style>
+        :root{
+            --bg-main: #141b21; 
+            --bg-card: #1f2730; 
+            --text-primary: #e6eef6;
+            --accent-a: #00bcd4; 
+            --accent-b: #8bc34a; 
+        }
+        html,body { 
+            height:100%; 
+            margin:0; 
+            font-family:Inter, ui-sans-serif, system-ui; 
+            color:var(--text-primary); 
+            background:var(--bg-main); 
+        }
+        .glass { 
+            background: var(--bg-card); 
+            border-radius:1rem; 
+            padding:1rem; 
+            border: 1px solid rgba(255,255,255,0.05); 
+        }
+        .accent-gradient { 
+            background: linear-gradient(90deg,var(--accent-a),var(--accent-b)); 
+            -webkit-background-clip:text; 
+            color:transparent; 
+        }
+        .card-glow { 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.4); 
+            transition: transform .25s, box-shadow .25s; 
+        }
+        .card-glow:hover { 
+            transform: translateY(-4px); 
+            box-shadow: 0 8px 30px rgba(0,0,0,0.6), 0 0 15px var(--accent-a);
+        }
+        .btn { 
+            background: linear-gradient(90deg,var(--accent-a),var(--accent-b)); 
+            color:black; 
+            padding:0.65rem 1.5rem; 
+            border:none; 
+            border-radius:0.5rem; 
+            cursor:pointer; 
+            font-weight:700; 
+            display:inline-flex; 
+            align-items:center; 
+            gap:0.5rem;
+            transition: opacity 0.2s;
+        }
+        .btn:hover {
+            opacity: 0.9;
+        }
+        
+        /* Form/Input Styling */
+        input:not([type="radio"]):not([type="checkbox"]), select {
+            width: 100%;
+            padding: 0.5rem;
+            margin-top: 0.25rem;
+            background-color: #2e3743;
+            border: 1px solid #4a5568;
+            border-radius: 0.375rem;
+            color: var(--text-primary);
+        }
+        .radio-group label {
+            display: flex;
+            align-items: center;
+            padding: 0.5rem;
+            border: 1px solid #4a5568;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .radio-group input[type="radio"]:checked + label {
+            border-color: var(--accent-a);
+            background-color: rgba(0, 188, 212, 0.1);
+        }
+        .radio-group input[type="radio"] {
+            margin-right: 0.5rem;
+        }
+
+        /* Invoice/Modal Styling */
+        #invoiceContainer {
+            background-color: white; 
+            color: #1f2730; 
+            max-width: 450px;
+            width: 90%;
+            border-radius: 0.5rem;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+        }
+        #invoiceContainer h2 {
+            color: #00bcd4;
+        }
+        #invoiceItemsTable th, #invoiceItemsTable td {
+            padding: 8px 0;
+            border-bottom: 1px dashed #ccc;
+        }
+    </style>
 </head>
 <body class="antialiased">
 
-  <!-- HEADER / HERO -->
-  <header class="site-header">
-    <div class="hero-bg" aria-hidden="true"></div>
-    <div class="overlay" aria-hidden="true"></div>
+    <header class="bg-gray-900 border-b border-gray-800 sticky top-0 z-50">
+        <div class="px-5 py-4 max-w-7xl mx-auto flex items-center justify-between">
+            <div class="flex items-center gap-4">
+                <div class="text-xl font-bold accent-gradient">Dataphix Hub</div>
+            </div>
 
-    <div class="header-content px-5 py-6 max-w-7xl mx-auto flex items-center justify-between">
-      <div class="flex items-center gap-4">
-        <img src="dataphix.jpg" alt="Dataphix" class="w-14 h-14 rounded-lg drop-shadow-lg object-cover">
-        <div>
-          <div class="text-sm text-gray-300">Dataphix</div>
-          <div class="text-xl font-bold accent-gradient">Stationery & Tech Hub</div>
+            <div class="flex items-center gap-4">
+                <select id="currencySelect" class="rounded px-2 py-1 text-sm bg-gray-800 border border-gray-700 text-gray-200">
+                    <option value="UGX" selected>UGX</option>
+                    <option value="USD">USD</option>
+                </select>
+                <button id="openCartBtn" class="btn text-sm">
+                    <i class="fa fa-shopping-cart"></i>
+                    Cart <span id="topCartCount" class="ml-2 inline-block w-6 text-center bg-black text-white rounded-full">0</span>
+                </button>
+            </div>
         </div>
-      </div>
+    </header>
 
-      <nav class="hidden md:flex items-center gap-4 text-sm text-gray-200">
-        <a href="#shop" class="hover:underline">Shop</a>
-        <a href="#services" class="hover:underline">Services</a>
-        <a href="#contact" class="hover:underline">Contact</a>
-        <a href="#about" class="hover:underline">About</a>
-      </nav>
-
-      <div class="flex items-center gap-3">
-        <select id="currencySelect" class="rounded px-2 py-1 text-sm bg-transparent border border-gray-700">
-          <option value="UGX" selected>UGX</option>
-          <option value="USD">USD</option>
-          <option value="EUR">EUR</option>
-        </select>
-        <button id="openCartBtn" class="btn">
-          <i class="fa fa-shopping-cart"></i>
-          Cart <span id="topCartCount" class="ml-2 inline-block w-6 text-center bg-white text-black rounded">0</span>
-        </button>
-      </div>
-    </div>
-
-    <div class="px-5 pb-12 pt-6 max-w-7xl mx-auto text-center">
-      <div class="relative z-10">
-        <h1 class="text-3xl md:text-5xl font-extrabold accent-gradient mb-3">Welcome to Dataphix Stationery & Tech Hub</h1>
-        <p class="max-w-3xl mx-auto text-gray-300 text-base md:text-lg leading-relaxed">
-          Your all-in-one creative lab for printing, tech solutions, and next-gen IT innovation. From code to color print — we make ideas come alive. ⚡
-        </p>
-        <div class="mt-6 flex flex-col sm:flex-row gap-3 justify-center items-center">
-          <a href="#shop" class="btn">Explore Products</a>
-          <a href="#services" class="btn">View Services</a>
-        </div>
-      </div>
-
-      <div class="mt-6">
-        <canvas id="particles" class="w-full h-40"></canvas>
-      </div>
-    </div>
-  </header>
-
-  <!-- MAIN -->
-  <main class="pb-16">
-    <section id="shop" class="max-w-7xl mx-auto px-5 py-10">
-      <h2 class="text-2xl font-bold mb-4">Latest Tech Hub Products</h2>
-      <div id="productGrid" class="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"></div>
-    </section>
-
-    <section id="services" class="max-w-7xl mx-auto px-5 py-10">
-      <h2 class="text-2xl font-bold mb-4">Printing & Stationery Services</h2>
-      <div class="glass p-4 overflow-x-auto">
-        <table>
-          <thead>
-            <tr>
-              <th>Service</th>
-              <th>Pages / Qty</th>
-              <th>Price (UGX)</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody id="servicesTable"></tbody>
-        </table>
-      </div>
-    </section>
-
-    <section id="contact" class="max-w-7xl mx-auto px-5 py-10">
-      <h2 class="text-2xl font-bold mb-4">Contact Us</h2>
-      <div class="glass p-6 grid gap-4">
-        <label>Email:</label>
-        <input type="email" id="contactEmail" placeholder="yourname@example.com" />
-        <label>Message:</label>
-        <textarea id="contactMsg" rows="4" placeholder="Write your message here..."></textarea>
-        <label>Delivery Request:</label>
-        <select id="deliveryOption">
-          <option value="pickup">Pickup</option>
-          <option value="delivery">Delivery</option>
-        </select>
-        <label>Contact Address (if delivery):</label>
-        <input type="text" id="contactAddr" placeholder="Address for delivery" />
-        <div class="flex gap-3">
-          <button id="sendContactBtn" class="btn">Send Message</button>
-          <button id="clearContactBtn" class="bg-gray-700 text-white px-4 py-2 rounded">Clear</button>
-        </div>
-      </div>
-    </section>
-  </main>
-
-<!-- CART / INVOICE MODAL -->
-<div id="cartModal" class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center hidden z-50">
-  <div class="bg-gray-900 p-6 rounded-2xl w-11/12 sm:w-96 max-h-[90vh] overflow-y-auto glass relative">
-    <div class="flex justify-between items-center">
-      <h3 class="text-xl font-bold mb-2">Cart / Invoice</h3>
-      <button id="closeCart" class="text-gray-300 hover:text-white text-2xl font-bold">&times;</button>
-    </div>
-
-    <ul id="cartItems" class="space-y-2 mt-2"></ul>
-
-    <div class="mt-4 flex justify-between font-semibold text-lg">
-      <span>Total:</span> <span id="cartTotal">UGX 0</span>
-    </div>
-
-    <div class="mt-4 grid gap-2">
-      <button id="checkoutBtn" class="btn">Checkout</button>
-      <button id="clearCartBtn" class="bg-gray-700 text-white py-2 rounded">Clear Cart</button>
-    </div>
-  </div>
-</div>
-
-<script>
-  const cartModal = document.getElementById('cartModal');
-  const openCartBtn = document.getElementById('openCartBtn');
-  const closeCartBtn = document.getElementById('closeCart');
-
-  // Open cart
-  openCartBtn.addEventListener('click', () => cartModal.classList.remove('hidden'));
-
-  // Close cart with X button
-  closeCartBtn.addEventListener('click', () => cartModal.classList.add('hidden'));
-
-  // Close cart when clicking outside the modal content
-  cartModal.addEventListener('click', (e) => {
-    if (e.target === cartModal) {
-      cartModal.classList.add('hidden');
-    }
-  });
-</script>
-
-
-    let invoiceHTML = `
-      <div style="font-family:Arial,sans-serif;padding:20px;color:#111;background:#fff;max-width:700px;margin:auto;border-radius:12px;">
-        <div style="display:flex;justify-content:space-between;align-items:center;border-bottom:2px solid #00bcd4;padding-bottom:10px;margin-bottom:20px;">
-          <div>
-            <h2 style="color:#00bcd4;margin:0;">DATAPHIX TECH HUB</h2>
-            <p style="margin:2px 0;font-size:13px;">Kampala, Uganda<br>dataphixitsolutions@gmail.com<br>+256 785 476 064</p>
-          </div>
-          <img src="dataphix.jpg" alt="Logo" style="width:80px;height:80px;border-radius:10px;object-fit:cover;">
+    <main class="pb-16 max-w-7xl mx-auto px-5">
+        <div class="py-12 text-center">
+            <h1 class="text-4xl md:text-5xl font-extrabold accent-gradient mb-3">Welcome to the Tech Hub</h1>
+            <p class="max-w-3xl mx-auto text-gray-400 text-lg">
+                Your destination for cutting-edge tech and essential stationery services. ⚡
+            </p>
         </div>
 
-        <h3 style="margin-bottom:10px;">Invoice / Receipt</h3>
-        <p style="font-size:13px;margin-bottom:20px;">Invoice No: <strong>${invoiceNum}</strong><br>Date: ${dateStr}</p>
+        <section id="shop" class="py-10">
+            <h2 class="text-2xl font-bold mb-6">Latest Tech Products</h2>
+            <div id="productGrid" class="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"></div>
+        </section>
 
-        <table style="width:100%;border-collapse:collapse;margin-bottom:20px;">
-          <thead>
-            <tr style="background:#00bcd4;color:#000;">
-              <th style="text-align:left;padding:8px;">Item</th>
-              <th style="text-align:right;padding:8px;">Price (UGX)</th>
-            </tr>
-          </thead>
-          <tbody>
-            ${cart.map(it => `
-              <tr>
-                <td style="padding:8px;border-bottom:1px solid #ccc;">${it.name}</td>
-                <td style="padding:8px;text-align:right;border-bottom:1px solid #ccc;">${it.price.toLocaleString()}</td>
-              </tr>
-            `).join('')}
-          </tbody>
-        </table>
+        <section id="services" class="py-10">
+            <h2 class="text-2xl font-bold mb-6">Printing & Stationery Services</h2>
+            <div class="glass p-4 overflow-x-auto">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Service</th>
+                            <th>Pages / Qty</th>
+                            <th>Price (UGX)</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="servicesTable"></tbody>
+                </table>
+            </div>
+        </section>
+    </main>
 
-        <h3 style="text-align:right;margin-bottom:10px;">Total: UGX ${cart.reduce((a,b)=>a+b.price,0).toLocaleString()}</h3>
-        <p style="font-size:13px;text-align:center;">Thank you for shopping with Dataphix 💙</p>
-        <div style="text-align:center;margin-top:20px;">
-          <button onclick="window.print()" style="background:#00bcd4;color:#000;border:none;padding:8px 16px;border-radius:8px;font-weight:600;cursor:pointer;">Print / Save as PDF</button>
+    <footer class="bg-gray-900 border-t border-gray-800 mt-10 py-8">
+        <div class="max-w-7xl mx-auto px-5">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center md:text-left">
+                
+                <div>
+                    <div class="flex items-center justify-center md:justify-start mb-3">
+                        <img src="dataphix.jpg" alt="Dataphix Logo" class="w-10 h-10 rounded mr-3">
+                        <div class="text-2xl font-bold accent-gradient">Dataphix Hub</div>
+                    </div>
+                    <p class="text-sm text-gray-400">
+                        Your Stationery & Tech Partner in Kampala.
+                    </p>
+                </div>
+
+                <div>
+                    <h3 class="text-lg font-semibold text-white mb-3">Get in Touch</h3>
+                    <p class="text-gray-300 flex items-center justify-center md:justify-start mb-2">
+                        <i class="fa fa-envelope mr-3 text-cyan-400"></i> 
+                        <a href="mailto:info@dataphixhub.com" class="hover:text-cyan-400">info@dataphixhub.com</a>
+                    </p>
+                    <p class="text-gray-300 flex items-center justify-center md:justify-start">
+                        <i class="fa fa-phone mr-3 text-lime-400"></i> 
+                        <a href="tel:+256700123456" class="hover:text-lime-400">+256 700 123 456</a>
+                    </p>
+                </div>
+
+                <div class="md:text-right">
+                    <h3 class="text-lg font-semibold text-white mb-3">Location</h3>
+                    <p class="text-sm text-gray-400 mb-4">
+                        Acacia Avenue, Kampala, Uganda
+                    </p>
+                    <p class="text-xs text-gray-500">
+                        &copy; 2025 Dataphix Hub. All rights reserved.
+                    </p>
+                </div>
+            </div>
         </div>
-      </div>
-    `;
+    </footer>
 
-    // Create printable window
-    const w = window.open('', 'PRINT', 'height=700,width=900');
-    w.document.write(`<html><head><title>${invoiceNum}</title></head><body>${invoiceHTML}</body></html>`);
-    w.document.close();
-    w.focus();
-  }
+    <div id="cartModal" class="fixed inset-0 bg-black/70 flex items-center justify-center hidden z-50 transition-opacity duration-300">
+        <div class="glass p-6 rounded-2xl w-11/12 sm:w-96 max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-bold">Your Cart</h3>
+                <button id="closeCart" class="text-gray-400 hover:text-white"><i class="fa fa-times text-xl"></i></button>
+            </div>
+            <ul id="cartItems" class="space-y-3 mt-2 divide-y divide-gray-800"></ul>
+            <div class="mt-6 flex justify-between font-extrabold text-xl border-t border-gray-700 pt-4">
+                <span>TOTAL:</span> <span id="cartTotal" class="accent-gradient">UGX 0</span>
+            </div>
+            <div class="mt-6 grid gap-3">
+                <button id="checkoutBtn" class="btn w-full">Proceed to Checkout</button> 
+                <button id="clearCartBtn" class="bg-red-700 text-white py-2 rounded-lg font-semibold hover:bg-red-600">Clear Cart</button>
+            </div>
+        </div>
+    </div>
 
-  // Hook up to checkout button
-  document.getElementById('checkoutBtn').addEventListener('click', () => {
-    generateInvoice();
-  });
-</script>
+    <div id="orderFormModal" class="hidden fixed inset-0 bg-black/80 flex justify-center items-center z-50">
+        <div class="glass p-6 rounded-2xl w-11/12 md:w-[600px] max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-center mb-4 border-b border-gray-700 pb-3">
+                <h3 class="text-2xl font-bold accent-gradient">Complete Your Order</h3>
+                <button id="closeOrderForm" class="text-gray-400 hover:text-white"><i class="fa fa-times text-xl"></i></button>
+            </div>
 
+            <form id="orderForm" class="space-y-6">
+                
+                <div class="space-y-2">
+                    <label class="block text-lg font-semibold text-white">1. Delivery or Pickup? <span class="text-red-500">*</span></label>
+                    <div class="radio-group grid grid-cols-2 gap-3">
+                        <div>
+                            <input type="radio" id="delivery" name="deliveryType" value="Delivery" required checked>
+                            <label for="delivery" class="hover:border-cyan-400">
+                                <i class="fa fa-truck mr-2 text-cyan-400"></i> Delivery (Shipping Fees Apply)
+                            </label>
+                        </div>
+                        <div>
+                            <input type="radio" id="pickup" name="deliveryType" value="Pickup" required>
+                            <label for="pickup" class="hover:border-lime-400">
+                                <i class="fa fa-store mr-2 text-lime-400"></i> Store Pickup (Free)
+                            </label>
+                        </div>
+                    </div>
+                </div>
 
-  <script>
-    const products = [
-      {id:1,name:'MacBook Pro M2',price:4500000,img:'https://www.notebookcheck.net/fileadmin/_processed_/b/1/csm_teaser_87a40a99d2.jpg'},
-      {id:2,name:'HP Spectre x360',price:3800000,img:'https://www.notebookcheck.net/fileadmin/Notebooks/News/_nc3/6301163cv11d.jpg'},
-      {id:3,name:'Lenovo ThinkPad X1',price:4000000,img:'https://platform.theverge.com/wp-content/uploads/sites/2/chorus/uploads/chorus_asset/file/12565107/vpavic_180712_2898_thinkpad_0003.jpg?quality=90&strip=all&crop=0%2C0%2C100%2C100&w=750'},
-      {id:4,name:'Chromebook Pixel',price:2800000,img:'https://cdn.mos.cms.futurecdn.net/LowqpvfEXKTLwcZXQBmTe3-650-80.jpg.webp'},
-      {id:5,name:'Huawei MateBook 14',price:3500000,img:'https://consumer.huawei.com/content/dam/huawei-cbg-site/common/mkt/pdp/pc/matebook-14-2024/images/huawei-matebook-14-2024-top-feactures1.webp'},
-      {id:6,name:'iPhone 17 pro',price:3200000,img:'https://cinem8.co/cdn/shop/files/iphone-17-pro-wallpaper-hd-4k-cosmic-orange.jpg?v=1758036888&width=1200'},
-      {id:7,name:'Samsung Galaxy S25',price:2800000,img:'https://fdn2.gsmarena.com/vv/pics/samsung/samsung-galaxy-s25-ultra-sm-s938-1.jpg'},
-      {id:8,name:'Huawei P60',price:2700000,img:'https://cdn.mos.cms.futurecdn.net/NL9dhymwBDJoNsoRC2Lvw9-650-80.jpg.webp'},
-      {id:9,name:'Tecno Phantom X',price:1500000,img:'https://cdn1.smartprix.com/rx-iMTcigfAF-w420-h420/tecno-phantom-x4.webp'},
-      {id:10,name:'Sony Xperia 1 V',price:2800000,img:'https://www.dpreview.com/files/p/articles/0915415837/sony-xperia-iv-live-lead-image.jpeg'}
-    ];
+                <div class="space-y-2">
+                    <label class="block text-lg font-semibold text-white">2. Preferred Payment Method <span class="text-red-500">*</span></label>
+                    <div class="radio-group grid grid-cols-2 gap-3">
+                        <div>
+                            <input type="radio" id="mobileMoney" name="paymentType" value="Mobile Money" required checked>
+                            <label for="mobileMoney" class="hover:border-cyan-400">
+                                <i class="fa fa-mobile-alt mr-2 text-cyan-400"></i> Mobile Money (M-Pesa/Airtel)
+                            </label>
+                        </div>
+                        <div>
+                            <input type="radio" id="cash" name="paymentType" value="Cash" required>
+                            <label for="cash" class="hover:border-lime-400">
+                                <i class="fa fa-money-bill-wave mr-2 text-lime-400"></i> Cash on Delivery/Pickup
+                            </label>
+                        </div>
+                    </div>
+                </div>
 
-    const services = [
-      {name:'Normal B/W Printing', pages:1, price:500},
-      {name:'Normal Color Printing', pages:1, price:1000},
-      {name:'Poster/Flyer/Banner Design', pages:'Varies', price:10000},
-      {name:'Sticker/Art Paper/Art Board', pages:'Varies', price:1500},
-      {name:'Certificate Paper', pages:'Varies', price:2500},
-      {name:'Passport Photos (4 pcs)', pages:'-', price:5000},
-      {name:'ID Plastic Copy (hard)', pages:'-', price:10000},
-      {name:'Photo Glass Frame', pages:'-', price:15000},
-      {name:'Wood Photo Board', pages:'-', price:25000},
-      {name:'Sealing', pages:'-', price:2000},
-      {name:'Phone Flashing / Unlocking', pages:'-', price:30000}
-    ];
+                <div class="space-y-4">
+                    <label class="block text-lg font-semibold text-white">3. Your Contact & Shipping Details</label>
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div>
+                            <label for="name" class="block text-sm font-medium text-gray-400">Full Name <span class="text-red-500">*</span></label>
+                            <input type="text" id="name" name="name" required placeholder="John Doe">
+                        </div>
+                        <div>
+                            <label for="email" class="block text-sm font-medium text-gray-400">Email Address</label>
+                            <input type="email" id="email" name="email" placeholder="john@example.com">
+                        </div>
+                    </div>
+                    <div>
+                        <label for="contact" class="block text-sm font-medium text-gray-400">Contact Number <span class="text-red-500">*</span></label>
+                        <input type="tel" id="contact" name="contact" required placeholder="+256 7XX XXX XXX">
+                    </div>
+                    <div id="addressFieldContainer">
+                        <label for="address" class="block text-sm font-medium text-gray-400">Delivery Address <span class="text-red-500">*</span></label>
+                        <input type="text" id="address" name="address" required placeholder="Plot No., Street, Area">
+                    </div>
+                </div>
 
-    let cart = [];
-    let invoiceCount = 1;
+                <button type="submit" class="btn w-full mt-6 text-lg">
+                    <i class="fa fa-receipt"></i> Confirm Order & Generate Invoice
+                </button>
+            </form>
+        </div>
+    </div>
+    
+    <div id="invoiceModal" class="hidden fixed inset-0 bg-black/80 flex justify-center items-center z-50">
+        <div id="invoiceContainer" class="p-8">
+            <div class="text-center mb-6">
+                <h2 class="text-3xl font-extrabold mb-1">DATAPHIX HUB</h2>
+                <p class="text-sm text-gray-600">Stationery & Tech Solutions</p>
+                <p class="text-xs text-gray-500 mt-2">Acacia Ave, Kampala | Tel: +256 700 123456</p>
+            </div>
+            
+            <hr class="border-gray-300 mb-4">
+            
+            <div class="flex justify-between text-sm mb-4 font-semibold">
+                <p id="invoiceNumber" class="text-sm">Invoice #: DPX-0001</p>
+                <p id="invoiceDate" class="text-sm">Date: </p>
+            </div>
 
-    function renderProducts(){
-      const grid = document.getElementById('productGrid');
-      grid.innerHTML = '';
-      products.forEach(p => {
-        const card = document.createElement('div');
-        card.className = 'p-4 rounded-2xl glass card-glow';
-        card.innerHTML = `
-          <img src="${p.img}" alt="${p.name}" class="w-full h-40 object-cover rounded-lg mb-3">
-          <h3 class="font-semibold text-white">${p.name}</h3>
-          <p class="mt-2 font-bold text-lime-400">UGX ${p.price.toLocaleString()}</p>
-          <button class="mt-3 w-full btn" data-id="${p.id}" data-type="product">Add to Cart</button>
-        `;
-        grid.appendChild(card);
-      });
-      grid.querySelectorAll('button[data-type="product"]').forEach(btn=>{
-        btn.addEventListener('click', ()=> addToCart('product', Number(btn.dataset.id)));
-      });
-    }
+            <div id="customerInfo" class="text-xs text-gray-700 mb-4 border-b border-gray-300 pb-2">
+                </div>
 
-    function renderServices(){
-      const tbody = document.getElementById('servicesTable');
-      tbody.innerHTML = '';
-      services.forEach((s, idx)=>{
-        const defaultPages = (typeof s.pages==='number')? s.pages:1;
-        const row = document.createElement('tr');
-        row.innerHTML = `
-          <td>${s.name}</td>
-          <td><input type="number" min="1" value="${defaultPages}" class="service-pages" data-idx="${idx}"></td>
-          <td class="service-price" data-idx="${idx}">UGX ${(s.price*defaultPages).toLocaleString()}</td>
-          <td><button class="btn" data-type="service" data-idx="${idx}">Add</button></td>
-        `;
-        tbody.appendChild(row);
-      });
+            <div class="overflow-x-auto mb-4">
+                <table id="invoiceItemsTable" class="w-full text-sm">
+                    <thead>
+                        <tr class="border-b-2 border-gray-400">
+                            <th class="text-left font-bold w-3/5">Item / Description</th>
+                            <th class="text-center font-bold w-1/5">Qty</th>
+                            <th class="text-right font-bold w-1/5">Total Price</th>
+                        </tr>
+                    </thead>
+                    <tbody id="invoiceItems">
+                        </tbody>
+                </table>
+            </div>
+            
+            <div class="mt-4 pt-2 border-t border-gray-500 space-y-1">
+                <div class="flex justify-between font-bold text-base">
+                    <span>Order Type:</span> <span id="invoiceDeliveryType" class="font-normal">Pickup</span>
+                </div>
+                <div class="flex justify-between font-bold text-lg">
+                    <span>TOTAL DUE:</span> <span id="invoiceTotal" class="text-green-600"></span>
+                </div>
+            </div>
+            
+            <p class="text-xs text-center text-gray-500 mt-6">Thank you for your patronage!</p>
 
-      tbody.querySelectorAll('input.service-pages').forEach(input=>{
-        input.addEventListener('change', ()=>{
-          const idx = Number(input.dataset.idx);
-          const pages = Number(input.value)||1;
-          document.querySelector(`.service-price[data-idx="${idx}"]`).textContent = `UGX ${(services[idx].price*pages).toLocaleString()}`;
+            <div class="mt-6 flex flex-wrap gap-3 justify-center">
+                <button id="downloadInvoicePdf" class="btn bg-red-600 hover:bg-red-500 text-white !px-3 !py-2 !text-sm !font-semibold !gap-2">
+                    <i class="fa fa-file-pdf"></i> Download PDF
+                </button>
+                <button id="printInvoice" class="btn bg-gray-500 hover:bg-gray-400 text-white !px-3 !py-2 !text-sm !font-semibold !gap-2">
+                    <i class="fa fa-print"></i> Print View
+                </button>
+                <button onclick="closeInvoice()" class="bg-gray-300 text-gray-800 px-3 py-2 rounded-lg font-semibold hover:bg-gray-400 !text-sm">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const products = [
+            {id:1,name:'MacBook Pro M2',price:4500000,img:'https://images.unsplash.com/photo-1517336714730-49689c81c6fa?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'},
+            {id:2,name:'HP Spectre x360',price:3800000,img:'https://images.unsplash.com/photo-1541804253165-27a3c3f91d8e?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'},
+            {id:3,name:'Lenovo ThinkPad X1',price:4000000,img:'https://images.unsplash.com/photo-1629851726002-349af7963d76?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'},
+            {id:4,name:'Chromebook Pixel',price:2800000,img:'https://images.unsplash.com/photo-1600861195655-cd1f10c30a59?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'},
+            {id:5,name:'Huawei MateBook 14',price:3500000,img:'https://images.unsplash.com/photo-1589492474020-f5a04e5d6661?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'},
+            {id:6,name:'iPhone 17 pro',price:3200000,img:'https://images.unsplash.com/photo-1603592817347-8177579c882d?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'},
+            {id:7,name:'Samsung Galaxy S25',price:2800000,img:'https://images.unsplash.com/photo-1610945265064-003929466b7a?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'},
+            {id:8,name:'Huawei P60',price:2700000,img:'https://images.unsplash.com/photo-1606843477810-7214774844ce?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'},
+        ];
+
+        const services = [
+            {name:'Normal B/W Printing (per page)', price:500, hasPages: true},
+            {name:'Normal Color Printing (per page)', price:1000, hasPages: true},
+            {name:'Poster/Flyer Design', price:10000, hasPages: false},
+            {name:'Certificate Paper Print', price:2500, hasPages: false},
+            {name:'Passport Photos (4 pcs)', price:5000, hasPages: false},
+            {name:'ID Plastic Copy (hard)', price:10000, hasPages: false},
+            {name:'Phone Flashing / Unlocking', price:30000, hasPages: false}
+        ];
+
+        // Global State
+        let cart = [];
+        let invoiceCount = 1;
+        let customerOrderDetails = {}; // Stores form data
+
+        // --- Utility Functions ---
+
+        function formatCurrency(amount) {
+            return `UGX ${amount.toLocaleString()}`;
+        }
+
+        function renderProducts(){
+            const grid = document.getElementById('productGrid');
+            grid.innerHTML = '';
+            products.forEach(p => {
+                const card = document.createElement('div');
+                card.className = 'glass card-glow p-4 flex flex-col justify-between';
+                card.innerHTML = `
+                    <img src="${p.img}" alt="${p.name}" class="w-full h-40 object-cover rounded-lg mb-4">
+                    <div>
+                        <h3 class="font-semibold text-white text-lg">${p.name}</h3>
+                        <p class="mt-1 font-bold text-lime-400 text-xl">${formatCurrency(p.price)}</p>
+                    </div>
+                    <button class="mt-4 w-full btn" data-id="${p.id}" data-type="product">
+                        <i class="fa fa-plus"></i> Add to Cart
+                    </button>
+                `;
+                grid.appendChild(card);
+            });
+            grid.querySelectorAll('button[data-type="product"]').forEach(btn=>{
+                btn.addEventListener('click', ()=> addToCart('product', Number(btn.dataset.id)));
+            });
+        }
+
+        function renderServices(){
+            const tbody = document.getElementById('servicesTable');
+            tbody.innerHTML = '';
+            services.forEach((s, idx)=>{
+                const isVariable = s.hasPages; 
+                const defaultPages = 1;
+
+                const row = document.createElement('tr');
+                row.className = 'border-b border-gray-800 last:border-b-0';
+                row.innerHTML = `
+                    <td>${s.name.replace(' (per page)', '').replace(' (4 pcs)', '')}</td>
+                    <td>
+                        ${isVariable ? 
+                            `<input type="number" min="1" value="${defaultPages}" class="service-pages w-16 text-center" data-idx="${idx}">` : 
+                            '<span class="text-gray-400">-</span>'}
+                    </td>
+                    <td class="service-price" data-idx="${idx}">${formatCurrency(s.price*defaultPages)}</td>
+                    <td><button class="btn !px-3 !py-1 !text-sm" data-type="service" data-idx="${idx}">Add</button></td>
+                `;
+                tbody.appendChild(row);
+            });
+
+            tbody.querySelectorAll('input.service-pages').forEach(input=>{
+                input.addEventListener('change', (e)=>{
+                    let pages = Number(e.target.value);
+                    if (pages < 1 || isNaN(pages)) pages = 1;
+                    e.target.value = pages;
+                    const idx = Number(input.dataset.idx);
+                    document.querySelector(`.service-price[data-idx="${idx}"]`).textContent = formatCurrency(services[idx].price*pages);
+                });
+            });
+
+            tbody.querySelectorAll('button[data-type="service"]').forEach(btn=>{
+                btn.addEventListener('click', ()=>{
+                    const idx = Number(btn.dataset.idx);
+                    let pages = 1;
+                    const pagesInput = document.querySelector(`input.service-pages[data-idx="${idx}"]`);
+                    if(pagesInput) {
+                        pages = Number(pagesInput.value)||1;
+                    }
+                    addToCart('service', idx, pages);
+                });
+            });
+        }
+
+        function addToCart(type, id, pages = 1){
+            let item;
+            if(type === 'product'){
+                const prod = products.find(p => p.id === id);
+                if(!prod) return;
+                item = {kind:'product', name:prod.name, price:prod.price, qty: 1};
+                cart.push(item);
+
+            } else if(type === 'service'){
+                const base = services[id];
+                const price = base.price * pages;
+                
+                const existingItem = cart.find(c => c.kind === 'service' && c.name === base.name);
+
+                if (existingItem) {
+                    existingItem.qty += pages;
+                    existingItem.price += price;
+                } else {
+                    item = {kind:'service', name:base.name, price:price, qty: pages, unitPrice: base.price};
+                    cart.push(item);
+                }
+            }
+            updateCartUI();
+        }
+
+        function updateCartUI(){
+            const list = document.getElementById('cartItems');
+            list.innerHTML='';
+            let total=0;
+
+            cart.forEach((item,idx)=>{
+                const li = document.createElement('li');
+                li.className='flex justify-between items-center py-2';
+                
+                const itemQtyDisplay = item.qty > 1 ? ` (x${item.qty})` : '';
+                
+                li.innerHTML = `
+                    <span class="text-sm">${item.name.replace(' (per page)', '').replace(' (4 pcs)', '')}${itemQtyDisplay}</span>
+                    <div class="flex items-center gap-3">
+                        <span class="font-semibold text-sm">${formatCurrency(item.price)}</span>
+                        <button class="text-red-500 hover:text-red-400" data-idx="${idx}" title="Remove"><i class="fa fa-trash"></i></button>
+                    </div>
+                `;
+                list.appendChild(li);
+            });
+            
+            list.querySelectorAll('button').forEach(btn=>{
+                btn.addEventListener('click', (e)=> {
+                    const idx = Number(e.currentTarget.dataset.idx);
+                    cart.splice(idx,1);
+                    updateCartUI();
+                });
+            });
+
+            total = cart.reduce((a,b)=>a+b.price,0);
+            document.getElementById('cartTotal').textContent = formatCurrency(total);
+            document.getElementById('topCartCount').textContent = cart.length;
+        }
+
+        function generateInvoice(){
+            const number = `DPX-${invoiceCount.toString().padStart(4,'0')}`;
+            const date = new Date().toLocaleDateString('en-GB', {day: '2-digit', month: 'short', year: 'numeric'});
+            
+            document.getElementById('invoiceNumber').textContent = `Invoice #: ${number}`;
+            document.getElementById('invoiceDate').textContent = `Date: ${date}`;
+            
+            // Populate Customer Details
+            const customerHtml = `
+                <p><strong>Customer:</strong> ${customerOrderDetails.name}</p>
+                <p><strong>Contact:</strong> ${customerOrderDetails.contact} ${customerOrderDetails.email ? `(${customerOrderDetails.email})` : ''}</p>
+                <p><strong>Method:</strong> ${customerOrderDetails.paymentType}</p>
+                ${customerOrderDetails.deliveryType === 'Delivery' ? 
+                    `<p><strong>Ship To:</strong> ${customerOrderDetails.address}</p>` : 
+                    `<p><strong>Pickup Location:</strong> Acacia Avenue, Kampala</p>`
+                }
+            `;
+            document.getElementById('customerInfo').innerHTML = customerHtml;
+            document.getElementById('invoiceDeliveryType').textContent = customerOrderDetails.deliveryType;
+
+            const container = document.getElementById('invoiceItems');
+            container.innerHTML='';
+            let total=0;
+
+            cart.forEach(item=>{
+                const row = document.createElement('tr');
+                row.className = 'border-b border-gray-300';
+                
+                const itemName = item.name.replace(' (per page)', '').replace(' (4 pcs)', '');
+                
+                row.innerHTML = `
+                    <td>${itemName}</td>
+                    <td class="text-center">${item.qty}</td>
+                    <td class="text-right">${formatCurrency(item.price)}</td>
+                `;
+                container.appendChild(row);
+                total+=item.price;
+            });
+
+            document.getElementById('invoiceTotal').textContent = formatCurrency(total);
+            invoiceCount++;
+
+            // Open Invoice Modal
+            document.getElementById('invoiceModal').classList.remove('hidden');
+        }
+
+        // --- MODAL & BUTTON LISTENERS ---
+
+        document.getElementById('openCartBtn').addEventListener('click', ()=> document.getElementById('cartModal').classList.remove('hidden'));
+        document.getElementById('closeCart').addEventListener('click', ()=> document.getElementById('cartModal').classList.add('hidden'));
+        document.getElementById('closeOrderForm').addEventListener('click', ()=> document.getElementById('orderFormModal').classList.add('hidden'));
+        
+        document.getElementById('clearCartBtn').addEventListener('click', ()=>{
+            cart=[]; updateCartUI();
         });
-      });
 
-      tbody.querySelectorAll('button[data-type="service"]').forEach(btn=>{
-        btn.addEventListener('click', ()=>{
-          const idx = Number(btn.dataset.idx);
-          const pagesInput = document.querySelector(`input.service-pages[data-idx="${idx}"]`);
-          const pages = Number(pagesInput.value)||1;
-          addToCart('service', idx, pages);
+        // Checkout Button now opens the ORDER FORM
+        document.getElementById('checkoutBtn').addEventListener('click', ()=>{
+            if(cart.length===0){ 
+                alert('Your cart is empty. Please add items to proceed.'); 
+                return;
+            }
+            document.getElementById('cartModal').classList.add('hidden');
+            document.getElementById('orderFormModal').classList.remove('hidden');
         });
-      });
-    }
 
-    function addToCart(type,id,pages=1){
-      if(type==='product'){
-        const prod = products.find(p=>p.id===id);
-        if(!prod) return;
-        cart.push({kind:'product', name:prod.name, price:prod.price});
-      }else if(type==='service'){
-        const base = services[id];
-        const price = base.price*pages;
-        cart.push({kind:'service', name:`${base.name} x${pages}`, price});
-      }
-      updateCartUI();
-    }
+        function closeInvoice(){ 
+            document.getElementById('invoiceModal').classList.add('hidden'); 
+            cart=[]; 
+            updateCartUI(); 
+        }
 
-    function updateCartUI(){
-      const list = document.getElementById('cartItems');
-      list.innerHTML='';
-      let total=0;
-      cart.forEach((item,idx)=>{
-        const li = document.createElement('li');
-        li.className='flex justify-between items-center';
-        li.innerHTML = `
-          <span>${item.name}</span>
-          <span class="font-semibold">UGX ${item.price.toLocaleString()}</span>
-          <button class="text-red-500" data-idx="${idx}"><i class="fa fa-trash"></i></button>
-        `;
-        list.appendChild(li);
-      });
-      list.querySelectorAll('button').forEach(btn=>{
-        btn.addEventListener('click', ()=> {
-          const idx = Number(btn.dataset.idx);
-          cart.splice(idx,1);
-          updateCartUI();
+        // --- ORDER FORM SUBMISSION ---
+        document.getElementById('orderForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const form = e.target;
+            customerOrderDetails = {
+                name: form.name.value,
+                email: form.email.value,
+                contact: form.contact.value,
+                deliveryType: form.deliveryType.value,
+                paymentType: form.paymentType.value,
+                address: form.address ? form.address.value : 'N/A'
+            };
+
+            // Close form and generate invoice
+            document.getElementById('orderFormModal').classList.add('hidden');
+            generateInvoice();
         });
-      });
-      total = cart.reduce((a,b)=>a+b.price,0);
-      document.getElementById('cartTotal').textContent = `UGX ${total.toLocaleString()}`;
-      document.getElementById('topCartCount').textContent = cart.length;
-    }
 
-    document.getElementById('openCartBtn').addEventListener('click', ()=> document.getElementById('cartModal').classList.remove('hidden'));
-    document.getElementById('closeCart').addEventListener('click', ()=> document.getElementById('cartModal').classList.add('hidden'));
-    document.getElementById('clearCartBtn').addEventListener('click', ()=>{
-      cart=[]; updateCartUI();
-    });
+        // --- Conditional Address Field ---
+        const deliveryRadios = document.querySelectorAll('input[name="deliveryType"]');
+        const addressContainer = document.getElementById('addressFieldContainer');
+        const addressInput = document.getElementById('address');
 
-    document.getElementById('checkoutBtn').addEventListener('click', ()=>{
-      if(cart.length===0){ alert('Cart empty'); return;}
-      generateInvoice();
-      document.getElementById('invoiceModal').classList.remove('hidden');
-      document.getElementById('cartModal').classList.add('hidden');
-    });
+        deliveryRadios.forEach(radio => {
+            radio.addEventListener('change', function() {
+                if (this.value === 'Delivery') {
+                    addressContainer.style.display = 'block';
+                    addressInput.required = true;
+                } else {
+                    addressContainer.style.display = 'none';
+                    addressInput.required = false;
+                }
+            });
+        });
+        // Initial state check
+        if (document.getElementById('pickup').checked) {
+            addressContainer.style.display = 'none';
+            addressInput.required = false;
+        }
 
-    function generateInvoice(){
-      const invoiceNumber = `DPX-${invoiceCount.toString().padStart(4,'0')}`;
-      invoiceCount++;
-      const invoiceDate = new Date().toLocaleString();
-      document.getElementById('invoiceNumber').textContent = `Invoice #: ${invoiceNumber}`;
-      document.getElementById('invoiceDate').textContent = `Date: ${invoiceDate}`;
-      const container = document.getElementById('invoiceItems');
-      container.innerHTML='';
-      let total=0;
-      cart.forEach(item=>{
-        const div = document.createElement('div');
-        div.className='flex justify-between';
-        div.innerHTML = `<span>${item.name}</span> <span>UGX ${item.price.toLocaleString()}</span>`;
-        container.appendChild(div);
-        total+=item.price;
-      });
-      document.getElementById('invoiceTotal').textContent = `UGX ${total.toLocaleString()}`;
-    }
+        
+        // --- DOWNLOAD PDF FUNCTION (jsPDF) ---
+        document.getElementById('downloadInvoicePdf').addEventListener('click', ()=>{
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            let y = 10;
+            const lineHeight = 6;
+            
+            const total = cart.reduce((a,b)=>a+b.price,0);
+            const invoiceNum = document.getElementById('invoiceNumber').textContent;
+            const invoiceDt = document.getElementById('invoiceDate').textContent;
+            const totalDisplay = formatCurrency(total);
+            
+            // Set Font and Colors for Professional Look
+            doc.setTextColor(31, 39, 48); // Dark Text
+            doc.setFontSize(20);
+            doc.text("DATAPHIX HUB", 105, y, null, null, "center");
+            y += lineHeight;
+            doc.setFontSize(10);
+            doc.text("Stationery & Tech Solutions", 105, y, null, null, "center");
+            y += lineHeight * 0.7;
+            doc.text("Acacia Ave, Kampala | Tel: +256 700 123456", 105, y, null, null, "center");
+            y += lineHeight;
+            doc.line(10, y, 200, y); // Horizontal line
+            y += lineHeight;
 
-    document.getElementById('printInvoice').addEventListener('click', ()=>{
-      const content = document.querySelector('#invoiceModal > div').innerHTML;
-      const win = window.open('', 'Print', 'height=600,width=800');
-      win.document.write('<html><head><title>Invoice</title></head><body style="color:#e6eef6; background:#0b0f14; font-family:Inter, sans-serif; padding:20px;">'+content+'</body></html>');
-      win.document.close();
-      win.print();
-    });
+            // Invoice Details
+            doc.setFontSize(12);
+            doc.setFont(undefined, 'bold');
+            doc.text(invoiceNum, 10, y);
+            doc.text(invoiceDt, 200, y, null, null, "right");
+            y += lineHeight * 1.5;
 
-    document.getElementById('downloadInvoice').addEventListener('click', ()=>{
-      const content = document.querySelector('#invoiceModal > div').innerText;
-      const blob = new Blob([content], {type:'text/plain'});
-      const a = document.createElement('a');
-      a.href = URL.createObjectURL(blob);
-      a.download = 'Dataphix_Invoice.txt';
-      a.click();
-      URL.revokeObjectURL(a.href);
-    });
+            // Customer Info Block
+            doc.setFontSize(10);
+            doc.setFont(undefined, 'normal');
+            doc.text(`Customer: ${customerOrderDetails.name}`, 10, y);
+            y += lineHeight * 0.8;
+            doc.text(`Contact: ${customerOrderDetails.contact} ${customerOrderDetails.email ? `(${customerOrderDetails.email})` : ''}`, 10, y);
+            y += lineHeight * 0.8;
+            doc.text(`Method: ${customerOrderDetails.paymentType}`, 10, y);
+            y += lineHeight * 0.8;
+            doc.text(`Delivery Type: ${customerOrderDetails.deliveryType}`, 10, y);
+            y += lineHeight * 0.8;
+            if (customerOrderDetails.deliveryType === 'Delivery') {
+                doc.text(`Ship To: ${customerOrderDetails.address}`, 10, y);
+                y += lineHeight * 0.8;
+            } else {
+                doc.text(`Pickup Location: Acacia Avenue, Kampala`, 10, y);
+                y += lineHeight * 0.8;
+            }
+            doc.line(10, y, 200, y, 'dashed'); // Separator
+            y += lineHeight * 1.5;
 
-    function closeInvoice(){ document.getElementById('invoiceModal').classList.add('hidden'); cart=[]; updateCartUI(); }
 
-    renderProducts();
-    renderServices();
-  </script>
+            // Items Table Header
+            doc.setFontSize(10);
+            doc.setFillColor(240, 240, 240); // Light gray background for header
+            doc.rect(10, y-5, 190, 6, "F"); 
+            doc.text("ITEM / DESCRIPTION", 12, y);
+            doc.text("QTY", 140, y, null, null, "center");
+            doc.text("TOTAL PRICE", 200, y, null, null, "right");
+            y += lineHeight;
+            doc.setFont(undefined, 'normal');
+            
+            // Items
+            cart.forEach(item => {
+                const itemName = item.name.replace(' (per page)', '').replace(' (4 pcs)', '');
+                
+                doc.text(itemName, 12, y);
+                doc.text(item.qty.toString(), 140, y, null, null, "center");
+                doc.text(formatCurrency(item.price), 200, y, null, null, "right");
+                y += lineHeight;
+            });
+            
+            y += lineHeight;
+            doc.line(10, y, 200, y); // Separator
+            y += lineHeight * 0.5;
+
+            // Totals
+            doc.setFontSize(14);
+            doc.setFont(undefined, 'bold');
+            doc.text("TOTAL DUE:", 150, y, null, null, "right");
+            doc.text(totalDisplay, 200, y, null, null, "right");
+            y += lineHeight * 2;
+            
+            // Footer
+            doc.setFontSize(10);
+            doc.setFont(undefined, 'italic');
+            doc.text("Thank you for your patronage!", 105, y, null, null, "center");
+
+            doc.save(`Dataphix_Invoice_${invoiceNum.split('#: ')[1]}.pdf`);
+        });
+
+        // --- PRINT VIEW FUNCTION ---
+        document.getElementById('printInvoice').addEventListener('click', ()=>{
+            const printContent = document.getElementById('invoiceContainer').cloneNode(true);
+            // Remove buttons from the cloned content
+            printContent.querySelector('.flex.flex-wrap.gap-3.justify-center').remove();
+            
+            // Apply essential print styles
+            const win = window.open('', 'Print', 'height=600,width=800');
+            win.document.write('<html><head><title>Invoice</title><style>');
+            win.document.write(`
+                @media print {
+                    body { margin: 0; padding: 0; }
+                    #invoiceContainer { width: 100%; box-shadow: none; border: none; margin: 0; }
+                    #invoiceContainer h2 { color: #00bcd4 !important; -webkit-print-color-adjust: exact; color-adjust: exact; }
+                    #invoiceItemsTable th, #invoiceItemsTable td { border-bottom: 1px dashed #ccc; padding: 8px 0; }
+                    #customerInfo { font-size: 10px; color: #555 !important; border-bottom: 1px solid #ccc !important; }
+                    #invoiceTotal { color: #10b981 !important; } /* Green */
+                }
+            `);
+            win.document.write('</style></head><body>');
+            win.document.write(printContent.outerHTML);
+            win.document.write('</body></html>');
+            win.document.close();
+            win.print();
+        });
+
+        // Initial rendering
+        renderProducts();
+        renderServices();
+    </script>
 </body>
-
-<footer class="relative overflow-hidden text-gray-300 border-t border-blue-900/40 mt-16 bg-black">
-  <!-- Glowing background animation -->
-  <div class="absolute inset-0 bg-[radial-gradient(circle_at_20%_30%,rgba(0,80,255,0.1),transparent),radial-gradient(circle_at_80%_70%,rgba(0,255,150,0.08),transparent)] animate-pulse"></div>
-
-  <!-- Background image overlay -->
-  <div class="absolute inset-0 bg-cover bg-center opacity-20" style="background-image: url('123.jpg');"></div>
-
-  <div class="relative max-w-7xl mx-auto px-6 py-14 grid grid-cols-1 md:grid-cols-5 gap-10 z-10">
-
-    <!-- Column 1: Logo & About -->
-    <div class="space-y-3">
-      <img src="dataphix.jpg" alt="Dataphix Logo" class="w-24 rounded-lg drop-shadow-[0_0_15px_rgba(0,255,255,0.3)] hover:drop-shadow-[0_0_25px_rgba(0,255,255,0.6)] transition-all duration-300">
-      <h3 class="text-2xl font-extrabold text-white tracking-tight">
-        Dataphix Tech & Print Hub
-      </h3>
-      <p class="text-sm leading-relaxed text-gray-400">
-        Where creativity meets code and print meets precision. 
-        We bring your brand to life — digitally and on paper.
-      </p>
-    </div>
-
-    <!-- Column 2: Quick Links -->
-    <div>
-      <h4 class="text-lg font-semibold text-white mb-4 border-b border-blue-500/30 pb-2 inline-block">
-        Quick Links
-      </h4>
-      <ul class="space-y-2 text-sm">
-        <li><a href="#home" class="hover:text-blue-400 transition duration-300">🏠 Home</a></li>
-        <li><a href="#products" class="hover:text-blue-400 transition duration-300">🛒 Products</a></li>
-        <li><a href="#services" class="hover:text-blue-400 transition duration-300">🖨️ Printing & Branding</a></li>
-        <li><a href="#contact" class="hover:text-blue-400 transition duration-300">📞 Contact Us</a></li>
-        <li><a href="#about" class="hover:text-blue-400 transition duration-300">ℹ️ About</a></li>
-      </ul>
-    </div>
-
-    <!-- Column 3: Contact Info -->
-    <div>
-      <h4 class="text-lg font-semibold text-white mb-4 border-b border-blue-500/30 pb-2 inline-block">
-        Contact
-      </h4>
-      <ul class="space-y-3 text-sm">
-        <li class="flex items-center space-x-2">
-          <i class="fa fa-map-marker text-blue-400"></i>
-          <span>Kampala, Uganda</span>
-        </li>
-        <li class="flex items-center space-x-2">
-          <i class="fa fa-envelope text-blue-400"></i>
-          <span>dataphixitsolutions@gmail.com</span>
-        </li>
-        <li class="flex items-center space-x-2">
-          <i class="fa fa-phone text-blue-400"></i>
-          <span>+256 785 476 064</span>
-        </li>
-      </ul>
-    </div>
-
-    <!-- Column 4: Socials -->
-    <div>
-      <h4 class="text-lg font-semibold text-white mb-4 border-b border-blue-500/30 pb-2 inline-block">
-        Connect With Us
-      </h4>
-      <div class="flex space-x-5 text-xl">
-        <a href="#" class="hover:text-blue-400 transition transform hover:scale-110"><i class="fab fa-facebook-f"></i></a>
-        <a href="#" class="hover:text-blue-400 transition transform hover:scale-110"><i class="fab fa-twitter"></i></a>
-        <a href="#" class="hover:text-blue-400 transition transform hover:scale-110"><i class="fab fa-instagram"></i></a>
-        <a href="#" class="hover:text-blue-400 transition transform hover:scale-110"><i class="fab fa-linkedin-in"></i></a>
-      </div>
-    </div>
-
-  <!-- CART / INVOICE MODAL -->
-<div id="cartModal" class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center hidden z-50">
-  <div class="bg-gray-900 p-6 rounded-2xl w-11/12 sm:w-96 max-h-[90vh] overflow-y-auto glass relative">
-    <div class="flex justify-between items-center">
-      <h3 class="text-xl font-bold mb-2">Cart / Invoice</h3>
-      <button id="closeCart" class="text-gray-300 hover:text-white text-2xl font-bold">&times;</button>
-    </div>
-
-    <ul id="cartItems" class="space-y-2 mt-2"></ul>
-
-    <div class="mt-4 flex justify-between font-semibold text-lg">
-      <span>Total:</span> <span id="cartTotal">UGX 0</span>
-    </div>
-
-    <div class="mt-4 grid gap-2">
-      <button id="checkoutBtn" class="btn">Checkout</button>
-      <button id="clearCartBtn" class="bg-gray-700 text-white py-2 rounded">Clear Cart</button>
-    </div>
-  </div>
-</div>
-
-<script>
-  const cartModal = document.getElementById('cartModal');
-  const openCartBtn = document.getElementById('openCartBtn');
-  const closeCartBtn = document.getElementById('closeCart');
-
-  // Open cart
-  openCartBtn.addEventListener('click', () => cartModal.classList.remove('hidden'));
-
-  // Close cart with X button
-  closeCartBtn.addEventListener('click', () => cartModal.classList.add('hidden'));
-
-  // Close cart when clicking outside the modal content
-  cartModal.addEventListener('click', (e) => {
-    if (e.target === cartModal) {
-      cartModal.classList.add('hidden');
-    }
-  });
-</script>
-
-
-  <p class="text-xs text-gray-500 mt-6 text-center">
-    © <span id="year"></span> <span class="text-gray-300 font-semibold">Dataphix Tech Hub</span>. All Rights Reserved.
-  </p>
-</footer>
-
 </html>
