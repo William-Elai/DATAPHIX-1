@@ -4,6 +4,8 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Dataphix Stationery & Tech Hub</title>
+  <link rel="icon" href="dataphix.jpg" type="image/png">
+
 
   <!-- Tailwind CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -19,7 +21,6 @@
       --accent-b: #8bc34a;
     }
     html,body { height:100%; margin:0; font-family:Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; color:#e6eef6; background:var(--bg-1); }
-    /* Header background: change url('header-bg.jpg') to your own */
     header.site-header {
       position: sticky;
       top: 0;
@@ -33,7 +34,7 @@
       inset:0;
       background: url('456.jpg') center/cover no-repeat;
       opacity: 0.45;
-      filter: blur(2px);
+      filter: blur(5px);
       z-index:0;
     }
     header.site-header .overlay {
@@ -49,14 +50,12 @@
     th { background: rgba(255,255,255,0.03); }
     input, textarea, select { width:100%; padding:0.5rem; margin-top:0.25rem; border-radius:0.5rem; border:none; background: rgba(255,255,255,0.03); color:#e6eef6; }
     .btn { background: linear-gradient(90deg,var(--accent-a),var(--accent-b)); color:black; padding:0.5rem 1rem; border:none; border-radius:0.5rem; cursor:pointer; font-weight:600; display:inline-flex; align-items:center; gap:0.5rem; }
-    /* small helpers */
     .max-w-7xl { max-width:1100px; margin-left:auto; margin-right:auto; }
   </style>
 </head>
-
 <body class="antialiased">
 
-  <!-- HEADER / HERO (combined for simplicity) -->
+  <!-- HEADER / HERO -->
   <header class="site-header">
     <div class="hero-bg" aria-hidden="true"></div>
     <div class="overlay" aria-hidden="true"></div>
@@ -90,7 +89,6 @@
       </div>
     </div>
 
-    <!-- HERO content -->
     <div class="px-5 pb-12 pt-6 max-w-7xl mx-auto text-center">
       <div class="relative z-10">
         <h1 class="text-3xl md:text-5xl font-extrabold accent-gradient mb-3">Welcome to Dataphix Stationery & Tech Hub</h1>
@@ -103,7 +101,6 @@
         </div>
       </div>
 
-      <!-- optional particles canvas -->
       <div class="mt-6">
         <canvas id="particles" class="w-full h-40"></canvas>
       </div>
@@ -112,16 +109,11 @@
 
   <!-- MAIN -->
   <main class="pb-16">
-
-    <!-- SHOP -->
     <section id="shop" class="max-w-7xl mx-auto px-5 py-10">
       <h2 class="text-2xl font-bold mb-4">Latest Tech Hub Products</h2>
-      <div id="productGrid" class="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        <!-- JS-generated product cards -->
-      </div>
+      <div id="productGrid" class="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"></div>
     </section>
 
-    <!-- SERVICES -->
     <section id="services" class="max-w-7xl mx-auto px-5 py-10">
       <h2 class="text-2xl font-bold mb-4">Printing & Stationery Services</h2>
       <div class="glass p-4 overflow-x-auto">
@@ -134,14 +126,11 @@
               <th>Action</th>
             </tr>
           </thead>
-          <tbody id="servicesTable">
-            <!-- JS-generated rows -->
-          </tbody>
+          <tbody id="servicesTable"></tbody>
         </table>
       </div>
     </section>
 
-    <!-- CONTACT -->
     <section id="contact" class="max-w-7xl mx-auto px-5 py-10">
       <h2 class="text-2xl font-bold mb-4">Contact Us</h2>
       <div class="glass p-6 grid gap-4">
@@ -162,32 +151,43 @@
         </div>
       </div>
     </section>
-
   </main>
 
   <!-- CART / INVOICE MODAL -->
   <div id="cartModal" class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center hidden z-50">
     <div class="bg-gray-900 p-6 rounded-2xl w-11/12 sm:w-96 max-h-[90vh] overflow-y-auto glass">
       <div class="flex justify-between items-center">
-        <h3 class="text-xl font-bold mb-2">Cart / Invoice</h3>
+        <h3 class="text-xl font-bold mb-2">Cart</h3>
         <button id="closeCart" class="text-gray-300 hover:text-white"><i class="fa fa-times"></i></button>
       </div>
-
       <ul id="cartItems" class="space-y-2 mt-2"></ul>
-
       <div class="mt-4 flex justify-between font-semibold text-lg">
         <span>Total:</span> <span id="cartTotal">UGX 0</span>
       </div>
-
       <div class="mt-4 grid gap-2">
-        <button id="checkoutBtn" class="btn">Checkout</button>
+        <button id="checkoutBtn" class="btn">🧾 Generate Invoice</button>
         <button id="clearCartBtn" class="bg-gray-700 text-white py-2 rounded">Clear Cart</button>
       </div>
     </div>
   </div>
-  <!-- SCRIPTS -->
+
+  <!-- INVOICE / RECEIPT MODAL -->
+  <div id="invoiceModal" class="hidden fixed inset-0 bg-black/70 flex justify-center items-center z-50">
+    <div class="bg-gray-900 text-gray-200 p-6 rounded-lg w-[400px] max-h-[90vh] overflow-y-auto">
+      <h2 class="text-2xl font-bold accent-gradient mb-2">Invoice</h2>
+      <p id="invoiceNumber" class="text-sm mb-1">Invoice #: DPX-0001</p>
+      <p id="invoiceDate" class="text-sm mb-4">Date: </p>
+      <div id="invoiceItems" class="space-y-1"></div>
+      <div class="mt-4 font-semibold text-lg">Total: <span id="invoiceTotal"></span></div>
+      <div class="mt-4 flex gap-2 justify-end">
+        <button id="printInvoice" class="btn"><i class="fa fa-print"></i> Print</button>
+        <button id="downloadInvoice" class="btn"><i class="fa fa-download"></i> Download</button>
+        <button onclick="closeInvoice()" class="bg-red-500 px-3 py-1 rounded">Close</button>
+      </div>
+    </div>
+  </div>
+
   <script>
-    // ---------- Data ----------
     const products = [
       {id:1,name:'MacBook Pro M2',price:4500000,img:'https://www.notebookcheck.net/fileadmin/_processed_/b/1/csm_teaser_87a40a99d2.jpg'},
       {id:2,name:'HP Spectre x360',price:3800000,img:'https://www.notebookcheck.net/fileadmin/Notebooks/News/_nc3/6301163cv11d.jpg'},
@@ -216,8 +216,8 @@
     ];
 
     let cart = [];
+    let invoiceCount = 1;
 
-    // ---------- Render Products ----------
     function renderProducts(){
       const grid = document.getElementById('productGrid');
       grid.innerHTML = '';
@@ -232,143 +232,137 @@
         `;
         grid.appendChild(card);
       });
-
-      // delegate add-to-cart for products
       grid.querySelectorAll('button[data-type="product"]').forEach(btn=>{
-        btn.addEventListener('click', (e)=>{
-          const id = Number(btn.dataset.id);
-          addToCart('product', id);
-        });
+        btn.addEventListener('click', ()=> addToCart('product', Number(btn.dataset.id)));
       });
     }
 
-    // ---------- Render Services ----------
     function renderServices(){
       const tbody = document.getElementById('servicesTable');
       tbody.innerHTML = '';
-      services.forEach((s, idx) => {
+      services.forEach((s, idx)=>{
+        const defaultPages = (typeof s.pages==='number')? s.pages:1;
         const row = document.createElement('tr');
-        // numeric input for pages/qty; default 1. When original pages is numeric use that else 1
-        const defaultPages = (typeof s.pages === 'number') ? s.pages : 1;
         row.innerHTML = `
-          <td class="align-top">${s.name}</td>
+          <td>${s.name}</td>
           <td><input type="number" min="1" value="${defaultPages}" class="service-pages" data-idx="${idx}"></td>
-          <td class="service-price" data-idx="${idx}">UGX ${ (s.price * defaultPages).toLocaleString() }</td>
-          <td><button class="btn" data-idx="${idx}" data-type="service">Add</button></td>
+          <td class="service-price" data-idx="${idx}">UGX ${(s.price*defaultPages).toLocaleString()}</td>
+          <td><button class="btn" data-type="service" data-idx="${idx}">Add</button></td>
         `;
         tbody.appendChild(row);
       });
 
-      // attach listeners: pages change
       tbody.querySelectorAll('input.service-pages').forEach(input=>{
-        input.addEventListener('change', (e)=>{
+        input.addEventListener('change', ()=>{
           const idx = Number(input.dataset.idx);
-          const pages = Number(input.value) || 1;
-          const priceCell = document.querySelector(`.service-price[data-idx="${idx}"]`);
-          priceCell.textContent = `UGX ${(services[idx].price * pages).toLocaleString()}`;
+          const pages = Number(input.value)||1;
+          document.querySelector(`.service-price[data-idx="${idx}"]`).textContent = `UGX ${(services[idx].price*pages).toLocaleString()}`;
         });
       });
 
-      // attach add service
       tbody.querySelectorAll('button[data-type="service"]').forEach(btn=>{
-        btn.addEventListener('click',(e)=>{
+        btn.addEventListener('click', ()=>{
           const idx = Number(btn.dataset.idx);
           const pagesInput = document.querySelector(`input.service-pages[data-idx="${idx}"]`);
-          const pages = Number(pagesInput.value) || 1;
+          const pages = Number(pagesInput.value)||1;
           addToCart('service', idx, pages);
         });
       });
     }
 
-    // ---------- Cart functions ----------
-    function addToCart(type, id, pages = 1){
-      if(type === 'product'){
-        const prod = products.find(p=>p.id === id);
+    function addToCart(type,id,pages=1){
+      if(type==='product'){
+        const prod = products.find(p=>p.id===id);
         if(!prod) return;
-        cart.push({ kind: 'product', name: prod.name, price: prod.price });
-      } else if(type === 'service'){
+        cart.push({kind:'product', name:prod.name, price:prod.price});
+      }else if(type==='service'){
         const base = services[id];
-        const qty = Number(pages) || 1;
-        const price = base.price * qty;
-        cart.push({ kind:'service', name: `${base.name} x${qty}`, price: price });
+        const price = base.price*pages;
+        cart.push({kind:'service', name:`${base.name} x${pages}`, price});
       }
       updateCartUI();
-      // open modal briefly (optional)
-      document.getElementById('cartModal').classList.remove('hidden');
     }
 
     function updateCartUI(){
-      const itemsList = document.getElementById('cartItems');
-      itemsList.innerHTML = '';
-      let total = 0;
-      cart.forEach((it, i) => {
-        total += Number(it.price);
+      const list = document.getElementById('cartItems');
+      list.innerHTML='';
+      let total=0;
+      cart.forEach((item,idx)=>{
         const li = document.createElement('li');
-        li.className = 'flex justify-between items-center bg-[#0b0f14] p-2 rounded';
-        li.innerHTML = `<div class="text-sm">${it.name}</div><div class="text-sm font-semibold">UGX ${Number(it.price).toLocaleString()}</div>`;
-        itemsList.appendChild(li);
+        li.className='flex justify-between items-center';
+        li.innerHTML = `
+          <span>${item.name}</span>
+          <span class="font-semibold">UGX ${item.price.toLocaleString()}</span>
+          <button class="text-red-500" data-idx="${idx}"><i class="fa fa-trash"></i></button>
+        `;
+        list.appendChild(li);
       });
+      list.querySelectorAll('button').forEach(btn=>{
+        btn.addEventListener('click', ()=> {
+          const idx = Number(btn.dataset.idx);
+          cart.splice(idx,1);
+          updateCartUI();
+        });
+      });
+      total = cart.reduce((a,b)=>a+b.price,0);
       document.getElementById('cartTotal').textContent = `UGX ${total.toLocaleString()}`;
       document.getElementById('topCartCount').textContent = cart.length;
     }
 
-    function clearCart(){
-      cart = [];
-      updateCartUI();
-    }
-
-    // ---------- init ----------
-    document.addEventListener('DOMContentLoaded', ()=>{
-      renderProducts();
-      renderServices();
-      updateCartUI();
-      document.getElementById('openCartBtn').addEventListener('click', ()=>document.getElementById('cartModal').classList.remove('hidden'));
-      document.getElementById('closeCart').addEventListener('click', ()=>document.getElementById('cartModal').classList.add('hidden'));
-      document.getElementById('clearCartBtn').addEventListener('click', ()=>clearCart());
-      document.getElementById('checkoutBtn').addEventListener('click', ()=>{ alert('Proceed to checkout — this is a demo handler.'); });
-      document.getElementById('clearContactBtn').addEventListener('click', ()=>{
-        document.getElementById('contactEmail').value='';
-        document.getElementById('contactMsg').value='';
-        document.getElementById('contactAddr').value='';
-      });
-      document.getElementById('sendContactBtn').addEventListener('click', ()=>{
-        const email = document.getElementById('contactEmail').value.trim();
-        const msg = document.getElementById('contactMsg').value.trim();
-        if(!email || !msg){ alert('Please provide email & message.'); return; }
-        alert('Message sent (demo). Thanks!'); // wire to backend as needed
-      });
-      document.getElementById('year').textContent = new Date().getFullYear();
+    document.getElementById('openCartBtn').addEventListener('click', ()=> document.getElementById('cartModal').classList.remove('hidden'));
+    document.getElementById('closeCart').addEventListener('click', ()=> document.getElementById('cartModal').classList.add('hidden'));
+    document.getElementById('clearCartBtn').addEventListener('click', ()=>{
+      cart=[]; updateCartUI();
     });
 
-    // optional: simple particles canvas placeholder (no external libs)
-    (function simpleParticles(){
-      const canvas = document.getElementById('particles');
-      if(!canvas) return;
-      const ctx = canvas.getContext('2d');
-      function resize(){ canvas.width = canvas.clientWidth; canvas.height = canvas.clientHeight; }
-      window.addEventListener('resize', resize);
-      resize();
-      const particles = Array.from({length:30}, ()=>{
-        return { x: Math.random()*canvas.width, y: Math.random()*canvas.height, r: Math.random()*1.6+0.6, vx:(Math.random()-0.5)*0.3, vy:(Math.random()-0.5)*0.3 };
-      });
-      function tick(){
-        ctx.clearRect(0,0,canvas.width,canvas.height);
-        particles.forEach(p=>{
-          p.x += p.vx; p.y += p.vy;
-          if(p.x<0) p.x = canvas.width;
-          if(p.x>canvas.width) p.x = 0;
-          if(p.y<0) p.y = canvas.height;
-          if(p.y>canvas.height) p.y = 0;
-          ctx.beginPath();
-          ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
-          ctx.fillStyle = 'rgba(255,255,255,0.04)';
-          ctx.fill();
-        });
-        requestAnimationFrame(tick);
-      }
-      tick();
-    })();
+    document.getElementById('checkoutBtn').addEventListener('click', ()=>{
+      if(cart.length===0){ alert('Cart empty'); return;}
+      generateInvoice();
+      document.getElementById('invoiceModal').classList.remove('hidden');
+      document.getElementById('cartModal').classList.add('hidden');
+    });
 
+    function generateInvoice(){
+      const invoiceNumber = `DPX-${invoiceCount.toString().padStart(4,'0')}`;
+      invoiceCount++;
+      const invoiceDate = new Date().toLocaleString();
+      document.getElementById('invoiceNumber').textContent = `Invoice #: ${invoiceNumber}`;
+      document.getElementById('invoiceDate').textContent = `Date: ${invoiceDate}`;
+      const container = document.getElementById('invoiceItems');
+      container.innerHTML='';
+      let total=0;
+      cart.forEach(item=>{
+        const div = document.createElement('div');
+        div.className='flex justify-between';
+        div.innerHTML = `<span>${item.name}</span> <span>UGX ${item.price.toLocaleString()}</span>`;
+        container.appendChild(div);
+        total+=item.price;
+      });
+      document.getElementById('invoiceTotal').textContent = `UGX ${total.toLocaleString()}`;
+    }
+
+    document.getElementById('printInvoice').addEventListener('click', ()=>{
+      const content = document.querySelector('#invoiceModal > div').innerHTML;
+      const win = window.open('', 'Print', 'height=600,width=800');
+      win.document.write('<html><head><title>Invoice</title></head><body style="color:#e6eef6; background:#0b0f14; font-family:Inter, sans-serif; padding:20px;">'+content+'</body></html>');
+      win.document.close();
+      win.print();
+    });
+
+    document.getElementById('downloadInvoice').addEventListener('click', ()=>{
+      const content = document.querySelector('#invoiceModal > div').innerText;
+      const blob = new Blob([content], {type:'text/plain'});
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'Dataphix_Invoice.txt';
+      a.click();
+      URL.revokeObjectURL(a.href);
+    });
+
+    function closeInvoice(){ document.getElementById('invoiceModal').classList.add('hidden'); cart=[]; updateCartUI(); }
+
+    renderProducts();
+    renderServices();
   </script>
 </body>
 <footer class="relative overflow-hidden text-gray-300 border-t border-blue-900/40 mt-16 bg-black">
