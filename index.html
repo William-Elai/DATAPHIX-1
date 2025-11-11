@@ -151,37 +151,46 @@
     </section>
   </main>
 
-  <!-- CART / INVOICE MODAL -->
-  <div id="cartModal" class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center hidden z-50">
-    <div class="bg-gray-900 p-6 rounded-2xl w-11/12 sm:w-96 max-h-[90vh] overflow-y-auto glass">
-      <div class="flex justify-between items-center">
-        <h3 class="text-xl font-bold mb-2">Cart</h3>
-        <button id="closeCart" class="text-gray-300 hover:text-white"><i class="fa fa-times"></i></button>
-      </div>
-      <ul id="cartItems" class="space-y-2 mt-2"></ul>
-      <div class="mt-4 flex justify-between font-semibold text-lg">
-        <span>Total:</span> <span id="cartTotal">UGX 0</span>
-      </div>
-      <div class="mt-4 grid gap-2">
-        <button id="checkoutBtn" class="btn">🧾 Generate Invoice</button>
-        <button id="clearCartBtn" class="bg-gray-700 text-white py-2 rounded">Clear Cart</button>
-      </div>
+<!-- CART / INVOICE MODAL -->
+<div id="cartModal" class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center hidden z-50">
+  <div class="bg-gray-900 p-6 rounded-2xl w-11/12 sm:w-96 max-h-[90vh] overflow-y-auto glass relative">
+    <div class="flex justify-between items-center">
+      <h3 class="text-xl font-bold mb-2">Cart / Invoice</h3>
+      <button id="closeCart" class="text-gray-300 hover:text-white text-2xl font-bold">&times;</button>
+    </div>
+
+    <ul id="cartItems" class="space-y-2 mt-2"></ul>
+
+    <div class="mt-4 flex justify-between font-semibold text-lg">
+      <span>Total:</span> <span id="cartTotal">UGX 0</span>
+    </div>
+
+    <div class="mt-4 grid gap-2">
+      <button id="checkoutBtn" class="btn">Checkout</button>
+      <button id="clearCartBtn" class="bg-gray-700 text-white py-2 rounded">Clear Cart</button>
     </div>
   </div>
+</div>
 
-  <!-- INVOICE / RECEIPT MODAL -->
- <!-- --- INVOICE SYSTEM --- -->
 <script>
-  // === INVOICE / RECEIPT GENERATOR ===
-  function generateInvoice() {
-    if (cart.length === 0) {
-      alert('Your cart is empty!');
-      return;
-    }
+  const cartModal = document.getElementById('cartModal');
+  const openCartBtn = document.getElementById('openCartBtn');
+  const closeCartBtn = document.getElementById('closeCart');
 
-    const now = new Date();
-    const invoiceNum = 'DPX-' + now.getTime();
-    const dateStr = now.toLocaleString();
+  // Open cart
+  openCartBtn.addEventListener('click', () => cartModal.classList.remove('hidden'));
+
+  // Close cart with X button
+  closeCartBtn.addEventListener('click', () => cartModal.classList.add('hidden'));
+
+  // Close cart when clicking outside the modal content
+  cartModal.addEventListener('click', (e) => {
+    if (e.target === cartModal) {
+      cartModal.classList.add('hidden');
+    }
+  });
+</script>
+
 
     let invoiceHTML = `
       <div style="font-family:Arial,sans-serif;padding:20px;color:#111;background:#fff;max-width:700px;margin:auto;border-radius:12px;">
