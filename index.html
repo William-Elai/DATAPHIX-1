@@ -581,42 +581,5 @@
     © <span id="year"></span> <span class="text-gray-300 font-semibold">Dataphix Tech Hub</span>. All Rights Reserved.
   </p>
 </footer>
-
-<script>
-  // Update footer cart count
-  function updateFooterCartCount() {
-    const count = cart.length;
-    document.getElementById('topCartCountFooter').textContent = count;
-  }
-
-  // Whenever you add to cart
-  function addToCart(name, price) {
-    cart.push({ name, price });
-    alert(`${name} added to cart.`);
-    updateFooterCartCount();
-  }
-
-  function openInvoice() {
-    if (cart.length === 0) { alert("Cart is empty!"); return; }
-    const invoiceModal = document.getElementById("invoice-modal");
-    const itemsContainer = document.getElementById("invoice-items");
-    const totalContainer = document.getElementById("invoice-total");
-    itemsContainer.innerHTML = cart.map((item,i)=>`<p>${i+1}. ${item.name} — $${item.price}</p>`).join("");
-    const total = cart.reduce((sum,item)=>sum+item.price,0);
-    totalContainer.innerText = `Total: $${total}`;
-    invoiceModal.classList.remove("hidden");
-  }
-
-  function closeInvoice() {
-    document.getElementById("invoice-modal").classList.add("hidden");
-  }
-
-  document.getElementById('year').textContent = new Date().getFullYear();
-</script>
-
-
-<script>
-  document.getElementById('year').textContent = new Date().getFullYear();
-</script>
   
 </html>
