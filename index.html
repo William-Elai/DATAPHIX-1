@@ -372,9 +372,9 @@
   <!-- Background image overlay -->
   <div class="absolute inset-0 bg-cover bg-center opacity-20" style="background-image: url('123.jpg');"></div>
 
-  <div class="relative max-w-7xl mx-auto px-6 py-14 grid grid-cols-1 md:grid-cols-4 gap-10 z-10">
+  <div class="relative max-w-7xl mx-auto px-6 py-14 grid grid-cols-1 md:grid-cols-5 gap-10 z-10">
 
-    <!-- Logo & About -->
+    <!-- Column 1: Logo & About -->
     <div class="space-y-3">
       <img src="dataphix.jpg" alt="Dataphix Logo" class="w-24 rounded-lg drop-shadow-[0_0_15px_rgba(0,255,255,0.3)] hover:drop-shadow-[0_0_25px_rgba(0,255,255,0.6)] transition-all duration-300">
       <h3 class="text-2xl font-extrabold text-white tracking-tight">
@@ -385,71 +385,8 @@
         We bring your brand to life — digitally and on paper.
       </p>
     </div>
-    <!-- --- INVOICE SYSTEM --- -->
-<!-- Product Card -->
-<div class="product" onclick="addToCart('iPhone', 1200)">
-  <h3>iPhone</h3>
-  <p>$1200</p>
-</div>
 
-<!-- Cart Summary -->
-<div id="cart-summary" class="mt-6">
-  <button 
-    class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded"
-    onclick="openInvoice()">
-    🧾 Checkout & Generate Invoice
-  </button>
-</div>
-
-<!-- Invoice Modal -->
-<div id="invoice-modal" class="hidden fixed inset-0 bg-black/60 flex justify-center items-center">
-  <div class="bg-gray-900 p-6 rounded-lg shadow-lg w-[400px]">
-    <h2 class="text-xl font-bold text-white mb-4">Invoice</h2>
-    <div id="invoice-items" class="text-gray-300 mb-4"></div>
-    <p id="invoice-total" class="text-lg font-semibold text-blue-400"></p>
-    <button onclick="closeInvoice()" class="mt-4 bg-red-500 px-3 py-1 rounded">Close</button>
-  </div>
-</div>
-
-<script>
-let cart = [];
-
-// Add item to cart
-function addToCart(name, price) {
-  cart.push({ name, price });
-  console.log("Added to cart:", name);
-  alert(`${name} added to cart.`);
-}
-
-// Open invoice only when user is done shopping
-function openInvoice() {
-  if (cart.length === 0) {
-    alert("Your cart is empty!");
-    return;
-  }
-
-  const invoiceModal = document.getElementById("invoice-modal");
-  const itemsContainer = document.getElementById("invoice-items");
-  const totalContainer = document.getElementById("invoice-total");
-
-  itemsContainer.innerHTML = cart
-    .map((item, i) => `<p>${i + 1}. ${item.name} — $${item.price}</p>`)
-    .join("");
-
-  const total = cart.reduce((sum, item) => sum + item.price, 0);
-  totalContainer.innerText = `Total: $${total}`;
-
-  invoiceModal.classList.remove("hidden");
-}
-
-// Close and clear
-function closeInvoice() {
-  document.getElementById("invoice-modal").classList.add("hidden");
-}
-</script>
-
-
-    <!-- Quick Links -->
+    <!-- Column 2: Quick Links -->
     <div>
       <h4 class="text-lg font-semibold text-white mb-4 border-b border-blue-500/30 pb-2 inline-block">
         Quick Links
@@ -463,10 +400,10 @@ function closeInvoice() {
       </ul>
     </div>
 
-    <!-- Contact Info -->
+    <!-- Column 3: Contact Info -->
     <div>
       <h4 class="text-lg font-semibold text-white mb-4 border-b border-blue-500/30 pb-2 inline-block">
-        Get in Touch
+        Contact
       </h4>
       <ul class="space-y-3 text-sm">
         <li class="flex items-center space-x-2">
@@ -484,7 +421,7 @@ function closeInvoice() {
       </ul>
     </div>
 
-    <!-- Socials -->
+    <!-- Column 4: Socials -->
     <div>
       <h4 class="text-lg font-semibold text-white mb-4 border-b border-blue-500/30 pb-2 inline-block">
         Connect With Us
@@ -495,14 +432,64 @@ function closeInvoice() {
         <a href="#" class="hover:text-blue-400 transition transform hover:scale-110"><i class="fab fa-instagram"></i></a>
         <a href="#" class="hover:text-blue-400 transition transform hover:scale-110"><i class="fab fa-linkedin-in"></i></a>
       </div>
+    </div>
 
-      <p class="text-xs text-gray-500 mt-6">
-        © <span id="year"></span> <span class="text-gray-300 font-semibold">Dataphix Tech Hub</span>. All Rights Reserved.
-      </p>
+    <!-- Column 5: Invoice / Checkout Button -->
+    <div>
+      <h4 class="text-lg font-semibold text-white mb-4 border-b border-blue-500/30 pb-2 inline-block">
+        Invoice / Cart
+      </h4>
+      <div class="space-y-3">
+        <button 
+          class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded w-full"
+          onclick="openInvoice()">
+          🧾 Checkout & Generate Invoice
+        </button>
+        <div id="cart-summary" class="text-sm text-gray-400 mt-2">
+          Items in cart: <span id="topCartCountFooter">0</span>
+        </div>
+      </div>
     </div>
 
   </div>
+
+  <p class="text-xs text-gray-500 mt-6 text-center">
+    © <span id="year"></span> <span class="text-gray-300 font-semibold">Dataphix Tech Hub</span>. All Rights Reserved.
+  </p>
 </footer>
+
+<script>
+  // Update footer cart count
+  function updateFooterCartCount() {
+    const count = cart.length;
+    document.getElementById('topCartCountFooter').textContent = count;
+  }
+
+  // Whenever you add to cart
+  function addToCart(name, price) {
+    cart.push({ name, price });
+    alert(`${name} added to cart.`);
+    updateFooterCartCount();
+  }
+
+  function openInvoice() {
+    if (cart.length === 0) { alert("Cart is empty!"); return; }
+    const invoiceModal = document.getElementById("invoice-modal");
+    const itemsContainer = document.getElementById("invoice-items");
+    const totalContainer = document.getElementById("invoice-total");
+    itemsContainer.innerHTML = cart.map((item,i)=>`<p>${i+1}. ${item.name} — $${item.price}</p>`).join("");
+    const total = cart.reduce((sum,item)=>sum+item.price,0);
+    totalContainer.innerText = `Total: $${total}`;
+    invoiceModal.classList.remove("hidden");
+  }
+
+  function closeInvoice() {
+    document.getElementById("invoice-modal").classList.add("hidden");
+  }
+
+  document.getElementById('year').textContent = new Date().getFullYear();
+</script>
+
 
 <script>
   document.getElementById('year').textContent = new Date().getFullYear();
