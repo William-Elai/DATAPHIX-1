@@ -4,6 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Dataphix Stationery & Tech Hub</title>
+    <img src="custom-logo.png" alt="Dataphix Logo" class="w-12 h-12 rounded-xl" />
 
     <script src="https://cdn.tailwindcss.com"></script>
 
@@ -30,7 +31,7 @@
             background: var(--bg-card); 
             border-radius:1rem; 
             padding:1rem; 
-            border: 1px solid rgba(255,255,255,0.05); 
+            border: 1px solid rgba(200,200,200,0.05); 
         }
         .accent-gradient { 
             background: linear-gradient(90deg,var(--accent-a),var(--accent-b)); 
@@ -59,7 +60,7 @@
             transition: opacity 0.2s;
         }
         .btn:hover {
-            opacity: 0.9;
+            opacity: 0.5;
         }
         
         /* Form/Input Styling */
@@ -110,6 +111,28 @@
 <body class="antialiased">
 
     <header class="bg-gray-900 border-b border-gray-800 sticky top-0 z-50">
+        <style>
+            header {
+  background: url('456.jpg') 
+              no-repeat center center/cover;
+  position: relative;
+}
+
+header::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6); /* adds overlay for readability */
+  backdrop-filter: blur(6px);
+  z-index: 0;
+}
+
+header > * {
+  position: relative;
+  z-index: 1;
+}
+
+        </style>
         <div class="px-5 py-4 max-w-7xl mx-auto flex items-center justify-between">
             <div class="flex items-center gap-4">
                 <div class="text-xl font-bold accent-gradient">Dataphix Hub</div>
@@ -345,27 +368,33 @@
     </div>
 
     <script>
-        const products = [
-            {id:1,name:'MacBook Pro M2',price:4500000,img:'https://images.unsplash.com/photo-1517336714730-49689c81c6fa?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'},
-            {id:2,name:'HP Spectre x360',price:3800000,img:'https://images.unsplash.com/photo-1541804253165-27a3c3f91d8e?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'},
-            {id:3,name:'Lenovo ThinkPad X1',price:4000000,img:'https://images.unsplash.com/photo-1629851726002-349af7963d76?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'},
-            {id:4,name:'Chromebook Pixel',price:2800000,img:'https://images.unsplash.com/photo-1600861195655-cd1f10c30a59?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'},
-            {id:5,name:'Huawei MateBook 14',price:3500000,img:'https://images.unsplash.com/photo-1589492474020-f5a04e5d6661?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'},
-            {id:6,name:'iPhone 17 pro',price:3200000,img:'https://images.unsplash.com/photo-1603592817347-8177579c882d?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'},
-            {id:7,name:'Samsung Galaxy S25',price:2800000,img:'https://images.unsplash.com/photo-1610945265064-003929466b7a?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'},
-            {id:8,name:'Huawei P60',price:2700000,img:'https://images.unsplash.com/photo-1606843477810-7214774844ce?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'},
-        ];
 
         const services = [
             {name:'Normal B/W Printing (per page)', price:500, hasPages: true},
             {name:'Normal Color Printing (per page)', price:1000, hasPages: true},
             {name:'Poster/Flyer Design', price:10000, hasPages: false},
             {name:'Certificate Paper Print', price:2500, hasPages: false},
+            {name:'Paper / photo frame with glass', price:15000, hasPages: false},
+            {name:'Photo board wood (per paper)', price:25000, hasPages: false},
             {name:'Passport Photos (4 pcs)', price:5000, hasPages: false},
             {name:'ID Plastic Copy (hard)', price:10000, hasPages: false},
-            {name:'Phone Flashing / Unlocking', price:30000, hasPages: false}
+            {name:'Sealing documents (per paper)', price:2000, hasPapers: true},
+            {name:'Phone Flashing / Unlocking', price:30000, hasPages: false},
+            {name:'Professional Website buuilding', price:800000, haspages: false}
         ];
-
+        
+        const products = [
+            {id:1,name:'MacBook Pro M2',price:4500000,img:'https://www.notebookcheck.net/fileadmin/_processed_/b/1/csm_teaser_87a40a99d2.jpg'}, 
+            {id:2,name:'HP Spectre x360',price:3800000,img:'https://www.notebookcheck.net/fileadmin/Notebooks/News/_nc3/6301163cv11d.jpg'}, 
+            {id:3,name:'Lenovo ThinkPad X1',price:4000000,img:'https://platform.theverge.com/wp-content/uploads/sites/2/chorus/uploads/chorus_asset/file/12565107/vpavic_180712_2898_thinkpad_0003.jpg?quality=90&strip=all&crop=0%2C0%2C100%2C100&w=750'},
+            {id:4,name:'Chromebook Pixel',price:2800000,img:'https://cdn.mos.cms.futurecdn.net/LowqpvfEXKTLwcZXQBmTe3-650-80.jpg.webp'}, 
+            {id:5,name:'Huawei MateBook 14',price:3500000,img:'https://consumer.huawei.com/content/dam/huawei-cbg-site/common/mkt/pdp/pc/matebook-14-2024/images/huawei-matebook-14-2024-top-feactures1.webp'}, 
+            {id:6,name:'iPhone 17 pro',price:3200000,img:'https://cinem8.co/cdn/shop/files/iphone-17-pro-wallpaper-hd-4k-cosmic-orange.jpg?v=1758036888&width=1200'}, 
+            {id:7,name:'Samsung Galaxy S25',price:2800000,img:'https://fdn2.gsmarena.com/vv/pics/samsung/samsung-galaxy-s25-ultra-sm-s938-1.jpg'}, 
+            {id:8,name:'Huawei P60',price:2700000,img:'https://cdn.mos.cms.futurecdn.net/NL9dhymwBDJoNsoRC2Lvw9-650-80.jpg.webp'}, 
+            {id:9,name:'Tecno Phantom X',price:1500000,img:'https://cdn1.smartprix.com/rx-iMTcigfAF-w420-h420/tecno-phantom-x4.webp'}, 
+            {id:10,name:'Sony Xperia 1 V',price:2800000,img:'https://www.dpreview.com/files/p/articles/0915415837/sony-xperia-iv-live-lead-image.jpeg'} 
+        ];
         // Global State
         let cart = [];
         let invoiceCount = 1;
