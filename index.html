@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Dataphix Stationery & Tech Hub</title>
-    <img src="custom-logo.png" alt="Dataphix Logo" class="w-12 h-12 rounded-xl" />
+    <link rel="icon" type="jpg" href="/dataphix.jpg"
 
     <script src="https://cdn.tailwindcss.com"></script>
 
@@ -31,7 +31,7 @@
             background: var(--bg-card); 
             border-radius:1rem; 
             padding:1rem; 
-            border: 1px solid rgba(200,200,200,0.05); 
+            border: 10px solid rgba(255,255,255,0.05); 
         }
         .accent-gradient { 
             background: linear-gradient(90deg,var(--accent-a),var(--accent-b)); 
@@ -111,30 +111,31 @@
 <body class="antialiased">
 
     <header class="bg-gray-900 border-b border-gray-800 sticky top-0 z-50">
-        <style>
-            header {
-  background: url('456.jpg') 
-              no-repeat center center/cover;
-  position: relative;
-}
+<style>
+    header {
+      background: url('456.jpg') 
+      no-repeat center center/cover;
+      position: relative;
+    }
+    
+    header::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.6); /* adds overlay for readability */
+      backdrop-filter: blur(6px);
+      z-index: 0;
+    }
 
-header::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.6); /* adds overlay for readability */
-  backdrop-filter: blur(6px);
-  z-index: 0;
-}
+    header > * {
+      position: relative;
+      z-index: 1;
+    }
 
-header > * {
-  position: relative;
-  z-index: 1;
-}
-
-        </style>
+</style>
         <div class="px-5 py-4 max-w-7xl mx-auto flex items-center justify-between">
             <div class="flex items-center gap-4">
+                <img src="custom-logo.png" alt="Dataphix Logo" class="w-12 h-12 rounded-xl" />
                 <div class="text-xl font-bold accent-gradient">Dataphix Hub</div>
             </div>
 
